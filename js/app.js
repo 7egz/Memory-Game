@@ -130,20 +130,25 @@ function counter(){
 function updateStars(move){
 	let rate;
 	switch(move){
-	case 10:
-	rate= "your rate equal 3 first level";
+	case 8:
+	rate="your rate equal 3 first level";
 	defineRate=rate;
-	stars.lastElementChild.style.color = 'gray';
 	break;
 			
 	case 20:
 	rate= "your rate equal 2 second level";
 	defineRate=rate;
-	stars.children[1].style.color = 'gray';
+	stars.lastElementChild.style.color = 'gray';
 	break;
 			
 	case 30:
-	rate= "your rate equal 1 third level";
+	rate= "your rate equal 3 third level";
+	defineRate=rate;
+	stars.children[1].style.color = 'gray';
+	break;
+			
+	case 40:
+	rate= "your rate equal 1 fourth level";
 	defineRate=rate;
 	break;
 	}
