@@ -147,7 +147,9 @@ h1 {
 .stars{
 	color:yellow;
 }
-
+.restartGame{
+	cursor: pointer;
+}
 
 
 

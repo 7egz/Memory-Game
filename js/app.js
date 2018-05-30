@@ -1,9 +1,9 @@
 /*
  * Create a list that holds all of your cards
  */
-let cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt",
-        "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb",
-        "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"];
+let collectCards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt",
+        "fa fa-cube",  "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
+let cards = collectCards.concat(collectCards);
 /*
  * Define all variables
  */
@@ -24,6 +24,8 @@ let modal = document.querySelector('.modal');
 let modaContent = document.querySelector('.modalContent');
 let closeBtn = document.querySelector('.closeBtn');
 let restart = document.querySelector('.restart');
+const restartGame = document.querySelector('.restartGame');
+let defineRate;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -74,7 +76,6 @@ function openListFunction(e){
 		openList.push(e.target.firstElementChild);
 		matchOne();
 		differntOne(openList);
-		counter();
 	   }
 }
 
@@ -86,6 +87,7 @@ function matchOne(){
 			matcList.push(item);
 			if(matcList.length===16){
 			setTimeout(endGame,0);
+			matcList.length=0;
 			}
 			});
 		openList.length=0;
@@ -93,19 +95,9 @@ function matchOne(){
 }
 
 //function to end the game
-function endGame(item){
+function endGame(){
 	stopTimer();
-				move=0;
-				showModal();	
-				let c = stars.children;
-				for(var i=0;i<c.length;i++){
-				c[i].style.color='yellow';
-				};
-				document.querySelector('.moves').innerHTML=move;
-				matcList.forEach(function(item){
-				item.parentElement.className='card';
-				addRandomSymbolToCard(liCards);
-				})
+	showModal();
 }
 // if the cards do not match, remove the cards from the list and hide the card's symbol
 function differntOne(){
@@ -116,6 +108,10 @@ function differntOne(){
 		},1000);
 		});
 		openList.length= 0 ;
+		
+	}
+	else if(openList.length===1){
+		counter();
 	}
 }
 
@@ -132,20 +128,27 @@ function counter(){
 }
 //change the color of stars with increasing of moves
 function updateStars(move){
+	let rate;
 	switch(move){
 	case 10:
+	rate= "your rate equal 3 first level";
+	defineRate=rate;
 	stars.lastElementChild.style.color = 'gray';
 	break;
-	
+			
 	case 20:
+	rate= "your rate equal 2 second level";
+	defineRate=rate;
 	stars.children[1].style.color = 'gray';
 	break;
-
-	case 30: 
-	stars.firstElementChild.style.color = 'gray';
+			
+	case 30:
+	rate= "your rate equal 1 third level";
+	defineRate=rate;
 	break;
 	}
 }
+
 //when click on restart button
 restart.addEventListener('click',function(){
 	let c = stars.children;
@@ -159,6 +162,7 @@ restart.addEventListener('click',function(){
 	});
 	move=0;
 	moveCount.innerHTML=move;
+	document.querySelector('.timer').innerHTML = '00:00';
 });
 //start the time counter
   function startTimer() {
@@ -186,16 +190,36 @@ restart.addEventListener('click',function(){
         clearInterval(timerInterval);
         timerCounter = 0;
         timerMin = 0;
-        document.querySelector('.timer').innerHTML = '00:00';
     }
 
 //pop with the result
 function showModal (){
 	modal.style.display='block';
 	moveCount = document.querySelector('.moves');
-	modaContent.children[1].textContent=`Awesome you have done it in total moves = ${moveCount.innerHTML} and in ${newClock}  play again`;
+	modaContent.children[1].childNodes[1].innerHTML=`Awesome you have done it in
+	total moves= ${moveCount.innerHTML},
+	total time= ${newClock} and 
+	${defineRate},
+	click the restart button to play again`;
 }
+
 closeBtn.addEventListener('click', hideModal)
 function hideModal (){
 	modal.style.display='none';
 }
+//restart button in popup to restart new game
+restartGame.addEventListener('click', function(){
+				move=0;	
+				let c = stars.children;
+				for(var i=0;i<c.length;i++){
+				c[i].style.color='yellow';
+				};
+				document.querySelector('.timer').innerHTML = '00:00';
+				document.querySelector('.moves').innerHTML=move;
+				addRandomSymbolToCard(liCards);
+				card.forEach(function(item){
+				item.className='card';
+				});
+				hideModal();
+	
+},true);
